@@ -11,7 +11,7 @@ authors = ['eap', 'mws', 'hpl']
 test = pd.read_csv('test.csv')
 
 x = test['text'].values
-scores = np.zeros((x.size, 3), dtype=np.bool)
+scores = np.zeros((x.size, 3), dtype=np.int64)
 
 for index, author in enumerate(authors):
     SEQUENCE_LENGTH, chars, char_indices, indices_char, text, X, y = load_training_file(author + '_train.txt')
@@ -70,7 +70,7 @@ for index, author in enumerate(authors):
             return 0
 
         score = 0
-        for i in range(0, len(text) - SEQUENCE_LENGTH - 1):
+        for i in range(0, len(text) - SEQUENCE_LENGTH - 1, 15):
             precut = text[i:]
             x = prepare_input(precut[:40])
             predictions = model.predict(x, verbose=0)[0]
@@ -83,5 +83,8 @@ for index, author in enumerate(authors):
 
     for i, text in enumerate(x):
         scores[i][index] = score_completions(text)
+        if i % 10 == 0:
+            print('Scored index', i)
+            print(scores[i])
 
 np.save('char_based_scores.npy', scores)
