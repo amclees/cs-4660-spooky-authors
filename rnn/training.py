@@ -42,7 +42,7 @@ def main():
     # and uses 10% of the data for testing/validation
     optimizer = RMSprop(lr=0.01)
     model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
-    history = model.fit(X, y, validation_split=0.10, batch_size=128, epochs=5, shuffle=True).history
+    history = model.fit(X, y, validation_split=0.10, batch_size=128, epochs=30, shuffle=True).history
 
     # it took a lot of time to train our model, so we saved our progress on a HDF5 file
     model.save(author + '_model.h5')
