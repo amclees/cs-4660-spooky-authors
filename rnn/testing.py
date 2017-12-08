@@ -16,10 +16,6 @@ if len(sys.argv) < 2:
 else:
     author = sys.argv[1].lower()
 
-if author not in authors:
-    print('Invalid author, please try one of', ', '.join(authors))
-    sys.exit()
-
 print('Testing author:', author)
 
 SEQUENCE_LENGTH, chars, char_indices, indices_char, text, X, y = load_training_file(author + '_train.txt')
@@ -108,9 +104,11 @@ def sample(predictions, temperature=1.0):
     probabilities = np.random.multinomial(1, predictions, 1)
     return np.argmax(probabilities)
 
-start_index = np.random.randint(0, len(text) - SEQUENCE_LENGTH - 1)
+start_index = 1
+while text[start_index - 1] != '\n':
+    start_index = np.random.randint(0, len(text) - SEQUENCE_LENGTH - 1)
 
-for diversity in [0.2, 0.5, 1.0, 1.2]:
+for diversity in [0.1, 0.2, 0.3, 0.5, 1.0, 1.2, 1.8]:
     print()
     print('----- diversity:', diversity, '------')
 
@@ -134,4 +132,25 @@ for diversity in [0.2, 0.5, 1.0, 1.2]:
 
         sys.stdout.write(next_char)
         sys.stdout.flush()
+
+    generated = ''
+    sentence = text[start_index: start_index + SEQUENCE_LENGTH]
+    generated += sentence
+    for i in range(5000):
+        x_pred = np.zeros((1, SEQUENCE_LENGTH, len(chars)))
+        for t, char in enumerate(sentence):
+            x_pred[0, t, char_indices[char]] = 1.
+
+        preds = model.predict(x_pred, verbose=0)[0]
+        next_index = sample(preds, diversity)
+        next_char = indices_char[next_index]
+
+        generated += next_char
+        sentence = sentence[1:] + next_char
+
+    with open('sample_diversity_' + str(diversity), 'w') as out:
+        out.write(generated)
+
+
     print()
+

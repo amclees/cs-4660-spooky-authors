@@ -21,10 +21,6 @@ def main():
     else:
         author = sys.argv[1].lower()
 
-    if author not in authors:
-        print('Invalid author, please try one of', ', '.join(authors))
-        sys.exit()
-
     print('Training on author:', author)
 
     SEQUENCE_LENGTH, chars, char_indices, indices_char, text, X, y = load_training_file(author + '_train.txt')
