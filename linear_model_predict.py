@@ -19,6 +19,8 @@ x = tokenizer.texts_to_matrix(x_text, mode='tfidf')
 
 predicted_proba = model.predict(x)
 
+np.save('linear_scores.npy', predicted_proba)
+
 output = pd.DataFrame(data={
     'id': test['id'],
     'EAP': predicted_proba[:,0],
