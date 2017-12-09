@@ -8,7 +8,7 @@ from preprocessing import load_training_file
 
 authors = ['eap', 'mws', 'hpl']
 
-test = pd.read_csv('test.csv')
+test = pd.read_csv('train.csv')
 
 x = test['text'].values
 scores = np.zeros((x.size, 3), dtype=np.int64)
@@ -87,4 +87,4 @@ for index, author in enumerate(authors):
             print('Scored index', i)
             print(scores[i])
 
-np.save('char_based_scores.npy', scores)
+np.save('char_based_scores_training.npy', scores)
