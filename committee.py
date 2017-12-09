@@ -18,18 +18,13 @@ for source in sources:
     probs_train.append(np.load(source + '_scores_training.npy'))
     probs.append(np.load(source + '_scores.npy'))
 
-x_train = np.hstack(*probs_train)
-x = np.hstack(*probs)
+x_train = np.hstack(probs_train)
+x = np.hstack(probs)
 
 y_train_text = train['author'].values
 y_train = np.zeros((train.shape[0], train.shape[1]), dtype=np.bool)
 for index, author in enumerate(y_train_text):
     y_train[index][targets.index(author)] = 1
-
-y_text = test['author'].values
-y = np.zeros((test.shape[0], test.shape[1]), dtype=np.bool)
-for index, author in enumerate(y_text):
-    y[index][targets.index(author)] = 1
 
 model = Sequential()
 
@@ -42,7 +37,7 @@ model.add(Dense(3, activation='softmax'))
 sgd = SGD()
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
-model.fit(x, y, validation_split=0.1, verbose=2, epochs=100)
+model.fit(x_train, y_train, validation_split=0.1, verbose=2, epochs=100)
 
 predicted_proba = model.predict(x)
 
