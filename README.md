@@ -8,6 +8,7 @@ Some code comes from other sources; this code is accompanied by licenses where r
 
 Specifically, the following elements were developed as follows:
 * The Naive Bayes code was loosely based on the Naive Bayes pipeline code from the CS 4660 lecture on Naive Bayes
+* The text generation code for the character-based LSTM was based on [an example provided by the official Keras GitHub](https://github.com/fchollet/keras/blob/master/examples/lstm_text_generation.py).
 * The word-based LSTM was based on a separate tutorial, license information may be found inside the `rnn_word_vec` folder
 * The word2vec standalone model and visualization is a slightly modified version of sample code from [this TensorFlow tutorial](https://www.tensorflow.org/tutorials/word2vec)
 
